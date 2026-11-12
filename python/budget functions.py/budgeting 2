@@ -1,0 +1,141 @@
+
+# SMARTBUDGET APP
+
+users = {}
+
+# ADMIN ACCOUNT
+admin_username = "admin"
+admin_password = "admin123"
+
+print("===== SMARTBUDGET =====")
+print("1. Register")
+print("2. Login")
+
+choice = input("Choose an option: ")
+
+# REGISTRATION
+if choice == "1":
+    username = input("Create username: ")
+    password = input("Create password: ")
+
+    if username == admin_username or username in users:
+        print("Username already exists!")
+    else:
+        users[username] = {
+            "password": password,
+            "income": 0,
+            "expenses": {},
+            "savings_goal": 0
+        }
+
+        print("Account created successfully!")
+
+# Login 
+elif choice == "2":
+    username = input("Enter username: ")
+    password = input("Enter password: ")
+
+    # ADMIN LOGIN
+    if username == admin_username and password == admin_password:
+
+        print("\nWELCOME ADMIN!")
+
+        while True:
+            print("\n===== ADMIN DASHBOARD =====")
+            print("1. View All Users")
+            print("2. Total Registered Users")
+            print("3. Exit")
+
+            option = input("Choose option: ")
+
+            if option == "1":
+                print("\n===== REGISTERED USERS =====")
+
+                for name, details in users.items():
+                    total_expenses = sum(
+                        details["expenses"].values()
+                    )
+
+                    balance = details["income"] - total_expenses
+
+                    print("\nUsername:", name)
+                    print("Income:", details["income"])
+                    print("Expenses:", total_expenses)
+                    print("Balance:", balance)
+
+            elif option == "2":
+                print("Total users:", len(users))
+
+            elif option == "3":
+                print("Admin logged out!")
+                break
+
+            else:
+                print("Invalid option!")
+
+    # NORMAL USER LOGIN
+    elif username in users and users[username]["password"] == password:
+
+        print("\nWELCOME TO SMARTBUDGET!")
+
+        while True:
+            print("\n===== USER MENU =====")
+            print("1. Add Income")
+            print("2. Add Expense")
+            print("3. View Balance")
+            print("4. Set Savings Goal")
+            print("5. View Report")
+            print("6. Logout")
+
+            option = input("Choose option: ")
+
+            if option == "1":
+                income = float(input("Enter income: "))
+                users[username]["income"] += income
+                print("Income added!")
+
+            elif option == "2":
+                category = input("Expense category: ")
+                amount = float(input("Expense amount: "))
+
+                expenses = users[username]["expenses"]
+
+                expenses[category] = expenses.get(category, 0) + amount
+
+                print("Expense recorded!")
+
+            elif option == "3":
+                income = users[username]["income"]
+                expenses = sum(
+                    users[username]["expenses"].values()
+                )
+
+                print("Balance:", income - expenses)
+
+            elif option == "4":
+                goal = float(input("Enter savings goal: "))
+                users[username]["savings_goal"] = goal
+                print("Savings goal saved!")
+
+            elif option == "5":
+                details = users[username]
+                total = sum(details["expenses"].values())
+
+                print("\n===== FINANCIAL REPORT =====")
+                print("Income:", details["income"])
+                print("Expenses:", total)
+                print("Balance:", details["income"] - total)
+                print("Savings goal:", details["savings_goal"])
+
+            elif option == "6":
+                print("Logged out successfully!")
+                break
+
+            else:
+                print("Invalid option!")
+
+    else:
+        print("Invalid username or password!")
+
+else:
+    print("Invalid selection!")

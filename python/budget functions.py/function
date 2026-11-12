@@ -1,0 +1,250 @@
+users = {}
+
+admin_username = "admin"
+admin_password = "1234"
+
+def register():
+
+    username = input("Create username: ")
+    password = input("Create password: ")
+
+    if username in users or username == admin_username:
+        print("Username already exists!")
+
+    else:
+        users[username] = {
+            "password": password,
+            "income": 0,
+            "expenses": {},
+            "savings_goal": 0
+        }
+
+        print("Account created successfully!")
+
+def login():
+
+    username = input("Enter username: ")
+    password = input("Enter password: ")
+
+    # ADMIN LOGIN
+    if username == admin_username and password == admin_password:
+        print("\nWELCOME ADMIN!")
+        admin_dashboard()
+        return
+
+    if username in users and users[username]["password"] == password:
+
+        print("\nWELCOME TO SMARTBUDGET!")
+        dashboard(username)
+
+    else:
+        print("Invalid username or password!")
+
+def add_income(username):
+
+    income = float(input("Enter your income: "))
+
+    if income > 0:
+        users[username]["income"] += income
+        print("Income added successfully!")
+    else:
+        print("Invalid income!")
+
+def add_expense(username):
+
+    category = input("Enter expense category: ")
+    amount = float(input("Enter expense amount: "))
+
+    if amount <= 0:
+        print("Invalid amount!")
+        return
+
+    expenses = users[username]["expenses"]
+
+    expenses[category] = expenses.get(category, 0) + amount
+
+    print("Expense recorded successfully!")
+def view_balance(username):
+
+    income = users[username]["income"]
+    expenses = users[username]["expenses"]
+
+    total_expenses = sum(expenses.values())
+    balance = income - total_expenses
+
+    print("\n===== YOUR BALANCE =====")
+    print("Income:", income)
+    print("Expenses:", total_expenses)
+    print("Balance:", balance)
+
+def savings_goal(username):
+
+    goal = float(input("Enter savings goal: "))
+
+    if goal > 0:
+        users[username]["savings_goal"] = goal
+        print("Savings goal saved!")
+    else:
+        print("Invalid savings goal!")
+def financial_report(username):
+
+    income = users[username]["income"]
+    expenses = users[username]["expenses"]
+
+    total_expenses = sum(expenses.values())
+    balance = income - total_expenses
+
+    print("\n===== FINANCIAL REPORT =====")
+    print("Username:", username)
+    print("Income:", income)
+    print("Expenses:", total_expenses)
+    print("Remaining balance:", balance)
+    print("Savings goal:", users[username]["savings_goal"])
+
+    print("\nEXPENSE CATEGORIES:")
+
+    for category, amount in expenses.items():
+        print(category, ":", amount)
+
+    if balance < 0:
+        print("WARNING: You have exceeded your income!")
+    else:
+        print("You are managing your money well!")
+
+def dashboard(username):
+
+    while True:
+
+        print("\n===== USER DASHBOARD =====")
+        print("1. Add Income")
+        print("2. Add Expense")
+        print("3. View Balance")
+        print("4. Set Savings Goal")
+        print("5. Financial Report")
+        print("6. Logout")
+
+        option = input("Choose an option: ")
+
+        if option == "1":
+            add_income(username)
+
+        elif option == "2":
+            add_expense(username)
+
+        elif option == "3":
+            view_balance(username)
+
+        elif option == "4":
+            savings_goal(username)
+
+        elif option == "5":
+            financial_report(username)
+
+        elif option == "6":
+            print("Logged out!")
+            break
+
+        else:
+            print("Invalid option!")
+def view_users():
+
+    print("\n===== REGISTERED USERS =====")
+
+    if len(users) == 0:
+        print("No registered users.")
+
+    for username in users:
+
+        print("\nUsername:", username)
+        print("Income:", users[username]["income"])
+
+        total = sum(users[username]["expenses"].values())
+
+        print("Total expenses:", total)
+        print("Balance:", users[username]["income"] - total)
+        print("Savings goal:", users[username]["savings_goal"])
+
+def total_income():
+
+    total = 0
+
+    for username in users:
+        total += users[username]["income"]
+
+    print("Total users' income:", total)
+
+def total_expenses():
+
+    total = 0
+
+    for username in users:
+        total += sum(users[username]["expenses"].values())
+
+    print("Total users' expenses:", total)
+
+def admin_dashboard():
+
+    while True:
+
+        print("\n================================")
+        print("       ADMIN DASHBOARD")
+        print("================================")
+        print("1. View All Users")
+        print("2. View Total Income")
+        print("3. View Total Expenses")
+        print("4. View User Financial Report")
+        print("5. Logout")
+
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            view_users()
+
+        elif choice == "2":
+            total_income()
+
+        elif choice == "3":
+            total_expenses()
+
+        elif choice == "4":
+
+            username = input("Enter username: ")
+
+            if username in users:
+                financial_report(username)
+            else:
+                print("User not found!")
+
+        elif choice == "5":
+            print("Admin logged out!")
+            break
+
+        else:
+            print("Invalid option!")
+
+def main():
+
+    while True:
+
+        print("\n==========================")
+        print("      SMARTBUDGET")
+        print("==========================")
+        print("1. Register")
+        print("2. Login")
+        print("3. Exit")
+
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            register()
+
+        elif choice == "2":
+            login()
+
+        elif choice == "3":
+            print("Thank you for using SmartBudget!")
+            break
+
+        else:
+            print("Invalid selection!")
+main()
