@@ -60,3 +60,56 @@ def view_students():
         print("Age:", details["age"])
         print("Class:", details["class"])
 
+# SEARCH STUDENT
+def search_student():
+    admission = input("Enter admission number: ")
+
+    if admission in students:
+        print("\nStudent found!")
+        print(students[admission])
+    else:
+        print("Student not found!")
+
+
+# DELETE STUDENT
+def delete_student():
+    admission = input("Enter admission number: ")
+
+    if admission in students:
+        del students[admission]
+        print("Student deleted successfully!")
+    else:
+        print("Student not found!")
+
+
+# REGISTER TEACHER
+def register_teacher():
+    teacher_id = input("Enter teacher ID: ")
+
+    if teacher_id in teachers:
+        print("Teacher already exists!")
+        return
+
+    name = input("Enter teacher name: ")
+    subject = input("Enter subject: ")
+
+    teachers[teacher_id] = {
+        "name": name,
+        "subject": subject
+    }
+
+    print("Teacher registered successfully!")
+
+
+# VIEW TEACHERS
+def view_teachers():
+    print("\n===== TEACHER RECORDS =====")
+
+    if not teachers:
+        print("No teachers registered.")
+        return
+
+    for teacher_id, details in teachers.items():
+        print("\nTeacher ID:", teacher_id)
+        print("Name:", details["name"])
+        print("Subject:", details["subject"])
