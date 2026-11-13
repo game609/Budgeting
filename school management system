@@ -1,0 +1,62 @@
+
+# SCHOOL MANAGEMENT SYSTEM
+
+students = {}
+teachers = {}
+examinations = {}
+
+admin_username = "admin"
+admin_password = "1234"
+
+
+# ADMIN LOGIN
+def login():
+    print("\n===== ADMIN LOGIN =====")
+
+    username = input("Enter username: ")
+    password = input("Enter password: ")
+
+    if username == admin_username and password == admin_password:
+        print("\nLogin successful!")
+        return True
+    else:
+        print("\nInvalid username or password!")
+        return False
+
+
+# REGISTER STUDENT
+def register_student():
+    print("\n===== STUDENT REGISTRATION =====")
+
+    admission = input("Admission number: ")
+
+    if admission in students:
+        print("Student already exists!")
+        return
+
+    name = input("Student name: ")
+    age = input("Student age: ")
+    student_class = input("Student class: ")
+
+    students[admission] = {
+        "name": name,
+        "age": age,
+        "class": student_class
+    }
+
+    print("Student registered successfully!")
+
+# VIEW STUDENTS
+def view_students():
+    print("\n===== STUDENT RECORDS =====")
+
+    if not students:
+        print("No students registered.")
+        return
+
+    for admission, details in students.items():
+        print("\nAdmission:", admission)
+        print("Name:", details["name"])
+        print("Age:", details["age"])
+        print("Class:", details["class"])
+
